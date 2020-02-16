@@ -9,17 +9,6 @@ use Symfony\Component\Process\Process;
  */
 class ShellProcessor
 {
-    /** @var Process */
-    private $process;
-
-    /**
-     * @param Process $process
-     */
-    public function __construct(Process $process)
-    {
-        $this->process = $process;
-    }
-
     /**
      * @param $command
      * @throws ShellProcessFailed
@@ -31,12 +20,12 @@ class ShellProcessor
             return;
         }
 
-        $this->process->setCommandLine($command);
-        $this->process->setTimeout(null);
-        $this->process->run();
+        $process = new Process($command);
+        $process->setTimeout(null);
+        $process->run();
 
-        if (!$this->process->isSuccessful()) {
-            throw new ShellProcessFailed($this->process->getErrorOutput());
+        if (!$process->isSuccessful()) {
+            throw new ShellProcessFailed($process->getErrorOutput());
         }
     }
 }

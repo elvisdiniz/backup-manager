@@ -29,33 +29,38 @@ class PostgresqlDatabase implements Database
 
     /**
      * @param $outputPath
-     * @return string
+     * @return array
      */
     public function getDumpCommandLine($outputPath)
     {
-        return sprintf('PGPASSWORD=%s pg_dump --clean --host=%s --port=%s --username=%s %s -f %s',
-            escapeshellarg($this->config['pass']),
-            escapeshellarg($this->config['host']),
-            escapeshellarg($this->config['port']),
-            escapeshellarg($this->config['user']),
+        return [
+            'PGPASSWORD=' . escapeshellarg($this->config['pass']),
+            'pg_dump',
+            '--clean',
+            '--host=' . escapeshellarg($this->config['host']),
+            '--port=' . escapeshellarg($this->config['port']),
+            '--username=' . escapeshellarg($this->config['user']),
             escapeshellarg($this->config['database']),
+            '-f',
             escapeshellarg($outputPath)
-        );
+        ];
     }
 
     /**
      * @param $inputPath
-     * @return string
+     * @return array
      */
     public function getRestoreCommandLine($inputPath)
     {
-        return sprintf('PGPASSWORD=%s psql --host=%s --port=%s --user=%s %s -f %s',
-            escapeshellarg($this->config['pass']),
-            escapeshellarg($this->config['host']),
-            escapeshellarg($this->config['port']),
-            escapeshellarg($this->config['user']),
+        return [
+            'PGPASSWORD=' . escapeshellarg($this->config['pass']),
+            'psql',
+            '--host=' . escapeshellarg($this->config['host']),
+            '--port=' . escapeshellarg($this->config['port']),
+            '--username=' . escapeshellarg($this->config['user']),
             escapeshellarg($this->config['database']),
+            '-f',
             escapeshellarg($inputPath)
-        );
+        ];
     }
 }

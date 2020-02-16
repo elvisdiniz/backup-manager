@@ -1,7 +1,6 @@
 <?php namespace BackupManager;
 
 use BackupManager\Procedures;
-use Symfony\Component\Process\Process;
 use BackupManager\Databases\DatabaseProvider;
 use BackupManager\Filesystems\FilesystemProvider;
 use BackupManager\Compressors\CompressorProvider;
@@ -69,6 +68,6 @@ class Manager
      */
     protected function getShellProcessor()
     {
-        return new ShellProcessor(new Process([], null, null, null, null));
+        return new ShellProcessor();
     }
 }

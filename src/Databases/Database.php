@@ -20,13 +20,13 @@ interface Database
 
     /**
      * @param $inputPath
-     * @return string
+     * @return array
      */
     public function getDumpCommandLine($inputPath);
 
     /**
      * @param $outputPath
-     * @return string
+     * @return array
      */
     public function getRestoreCommandLine($outputPath);
 }

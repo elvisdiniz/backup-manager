@@ -29,7 +29,7 @@ class MysqlDatabase implements Database
 
     /**
      * @param $outputPath
-     * @return string
+     * @return array
      */
     public function getDumpCommandLine($outputPath)
     {
@@ -56,17 +56,16 @@ class MysqlDatabase implements Database
             }
         }
 
-        $command = 'mysqldump --routines ' . implode(' ', $extras) . '%s %s > %s';
-        return sprintf($command,
-            $params,
-            escapeshellarg($this->config['database']),
-            escapeshellarg($outputPath)
+        return array_merge(
+            ['mysqldump', '--routines'],
+            $extras,
+            [$params, escapeshellarg($this->config['database']), '>', escapeshellarg($outputPath)]
         );
     }
 
     /**
      * @param $inputPath
-     * @return string
+     * @return array
      */
     public function getRestoreCommandLine($inputPath)
     {
@@ -84,10 +83,10 @@ class MysqlDatabase implements Database
             }
         }
 
-        return sprintf('mysql%s ' . implode(' ', $extras) . ' %s -e "source %s"',
-            $params,
-            escapeshellarg($this->config['database']),
-            $inputPath
+        return array_merge(
+            ['mysql', trim($params)],
+            $extras,
+            [escapeshellarg($this->config['database']), '-e', 'source', $inputPath]
         );
     }
 
